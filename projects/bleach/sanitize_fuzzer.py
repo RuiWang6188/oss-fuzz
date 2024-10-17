@@ -45,8 +45,6 @@ def trace_lines(frame, event, arg):
         if ignore_file(filename):
             return trace_lines
 
-        function_name = frame.f_code.co_name
-
         if (filename, lineno) not in total_coverage_info:
             delta_coverage_info[(filename, lineno)] = ((datetime.now() - START_TIME), curr_iter)
 
@@ -84,19 +82,16 @@ def save_coverage_info():
             json.dump(snapshot, f)
             f.write('\n')  # Ensure each JSON object is on a new line
 
-    print(f"Coverage information appended to {output_file}")
 
     total_coverage_info.update(delta_coverage_info)
     delta_coverage_info = {}
 
 def save_coverage_info_periodically():
     """Saves coverage information every hour for the first day, then every day."""
-    elapsed_time = 0
     interval = 60 * 60  # 1h interval
 
     while True:
       time.sleep(interval)
-      elapsed_time = time.time() - START_TIME_FLOAT
 
       save_coverage_info()
 
