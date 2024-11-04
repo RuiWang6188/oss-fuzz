@@ -99,9 +99,11 @@ function run_fuzz_target {
   # libFuzzer always finishes merge with an empty output dir.
   # Use 100s timeout instead of 25s as code coverage builds can be very slow.
   local args="-merge=1 -timeout=100 $corpus_dummy $corpus_real"
+  local args_new="-timeout=100 -max_total_time=$MAX_TOTAL_TIME $corpus_dummy $corpus_real"
 
   export LLVM_PROFILE_FILE=$profraw_file
-  timeout $TIMEOUT $OUT/$target $args &> $LOGS_DIR/$target.log
+  # timeout $TIMEOUT $OUT/$target $args &> $LOGS_DIR/$target.log
+  $OUT/$target $args_new &> $LOGS_DIR/$target.log
   if (( $? != 0 )); then
     echo "Error occured while running $target:"
     cat $LOGS_DIR/$target.log
