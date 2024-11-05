@@ -181,7 +181,9 @@ function run_python_fuzz_target {
   echo "{}" > "$FUZZER_STATS_DIR/$target.json"
 
   # Run fuzzer
-  $OUT/$target $corpus_real -atheris_runs=$(ls -la $corpus_real | wc -l) > $LOGS_DIR/$target.log 2>&1
+  # $OUT/$target $corpus_real -atheris_runs=$(ls -la $corpus_real | wc -l) > $LOGS_DIR/$target.log 2>&1
+  # TODO: taking max_total_time * 1000 as an approximation of the number of runs, think of a better way around
+  $OUT/$target -atheris_runs=$(( MAX_TOTAL_TIME * 1000 )) > $LOGS_DIR/$target.log 2>&1
   if (( $? != 0 )); then
     echo "Error happened getting coverage of $target"
     echo "This is likely because Atheris did not exit gracefully"
@@ -209,7 +211,12 @@ function run_java_fuzz_target {
       --additional_jvm_args=-javaagent\\:/opt/jacoco-agent.jar=$jacoco_args \
       $corpus_dummy $corpus_real"
 
-  timeout $TIMEOUT $OUT/$target $args &> $LOGS_DIR/$target.log
+  local args_new="-timeout=100 -max_total_time=$MAX_TOTAL_TIME --nohooks \
+      --additional_jvm_args=-javaagent\\:/opt/jacoco-agent.jar=$jacoco_args \
+      $corpus_dummy"
+
+  # timeout $TIMEOUT $OUT/$target $args &> $LOGS_DIR/$target.log
+  $OUT/$target $args_new &> $LOGS_DIR/$target.log
   if (( $? != 0 )); then
     echo "Error occured while running $target:"
     cat $LOGS_DIR/$target.log
@@ -246,7 +253,9 @@ function run_javascript_fuzz_target {
   # any crashing inputs so that we can report source-based code coverage
   # with a single sweep over the minimized corpus
   local merge_args="-merge=1 -timeout=100 $corpus_dummy $corpus_real"
-  timeout $TIMEOUT $OUT/$target $merge_args &> $LOGS_DIR/$target.log
+  local args="-timeout=100 -max_total_time=$MAX_TOTAL_TIME $corpus_dummy $corpus_real"
+  # timeout $TIMEOUT $OUT/$target $merge_args &> $LOGS_DIR/$target.log
+  $OUT/$target $args &> $LOGS_DIR/$target.log
 
   # nyc saves the coverage reports in a directory with the default name "coverage"
   local coverage_dir="$DUMPS_DIR/coverage_dir_for_${target}"
