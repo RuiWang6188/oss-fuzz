@@ -69,7 +69,8 @@ ENV PATH $PATH:$GOPATH/bin
 COPY gocoverage $GOPATH/gocoverage
 
 COPY install_go.sh /
-RUN /install_go.sh && rm -rf /install_go.sh /root/.go
+RUN /install_go.sh
+RUN rm -rf /install_go.sh /root/.go
 
 # Install OpenJDK 15 and trim its size by removing unused components.
 ENV JAVA_HOME=/usr/lib/jvm/java-17-openjdk-amd64
@@ -101,6 +102,7 @@ ENV GEM_PATH="/install/ruzzy"
 # Do this last to make developing these files easier/faster due to caching.
 COPY bad_build_check \
     coverage \
+    coverage_snapshot \
     coverage_helper \
     download_corpus \
     jacoco_report_converter.py \
