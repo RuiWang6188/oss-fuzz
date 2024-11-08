@@ -1418,9 +1418,6 @@ def _prepare_corpus_snapshot(args):
             backup_process.send_signal(signal.SIGTERM)
             backup_process.wait()
 
-            # remove the fuzzer_corpus_dir
-            shutil.rmtree(fuzzer_corpus_dir)
-
     return True
 
 
