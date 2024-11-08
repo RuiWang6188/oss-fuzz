@@ -477,12 +477,9 @@ elif [[ $FUZZING_LANGUAGE == "python" ]]; then
       coverage_snapshots+=("$file")
     done < <(find "$OUT" -maxdepth 1 -type f -name ".coverage_${fuzzer}_backup_*" -print0)
 
-    ls -la $OUT
-
     # Check if any snapshots are found
     if [ ${#coverage_snapshots[@]} -eq 0 ]; then
       echo "No coverage snapshots found for target $fuzzer in $OUT"
-      return 0
     fi
 
     for coverage_snapshot in "${coverage_snapshots[@]}"; do
