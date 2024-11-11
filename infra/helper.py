@@ -1373,30 +1373,35 @@ def _prepare_corpus_snapshot(args):
     fuzzer_targets = _get_fuzz_targets(args.project)
 
     for fuzzer_name in fuzzer_targets:
+        logger.info(f"fuzzer name: {fuzzer_name}")
+        logger.info(f"fuzzer targets: {fuzzer_targets}")
         # Make a corpus directory.
         fuzzer_corpus_dir = os.path.join(args.project.corpus, fuzzer_name)
         if not os.path.isdir(fuzzer_corpus_dir):
             os.makedirs(fuzzer_corpus_dir)
 
-        # Define backup base directory for this fuzzer.
-        backup_base_dir = os.path.join(args.project.corpus, fuzzer_name + '_backup')
-        if not os.path.isdir(backup_base_dir):
-            os.makedirs(backup_base_dir)
+        if not ".so" in fuzzer_name:
+          # Define backup base directory for this fuzzer.
+          backup_base_dir = os.path.join(args.project.corpus, fuzzer_name + '_backup')
+          if not os.path.isdir(backup_base_dir):
+              os.makedirs(backup_base_dir)
 
-        # Path to the backup script.
-        backup_script_path = os.path.join(OSS_FUZZ_DIR, 'infra', 'corpus_snapshot.sh')  # Replace with the actual path
+          # Path to the backup script.
+          backup_script_path = os.path.join(OSS_FUZZ_DIR, 'infra', 'corpus_snapshot.sh')  # Replace with the actual path
 
-        logger.info(f"Backing up {fuzzer_name} corpus to {backup_base_dir}, Using {backup_script_path}")
+          logger.info(f"Backing up {fuzzer_name} corpus to {backup_base_dir}, Using {backup_script_path}")
 
-        # Ensure the backup script is executable.
-        os.chmod(backup_script_path, 0o755)
+          # Ensure the backup script is executable.
+          os.chmod(backup_script_path, 0o755)
 
-        # Start the backup script.
-        backup_process = subprocess.Popen(
-            [backup_script_path, fuzzer_corpus_dir, backup_base_dir],
-            stdout=subprocess.PIPE,
-            stderr=subprocess.PIPE
-        )
+          logger.info(f"fuzzer_corpus_dir: {fuzzer_corpus_dir}")
+          logger.info(f"backup_base_dir: {backup_base_dir}")
+          # Start the backup script.
+          backup_process = subprocess.Popen(
+              [backup_script_path, fuzzer_corpus_dir, backup_base_dir],
+              stdout=subprocess.PIPE,
+              stderr=subprocess.PIPE
+          )
 
         try:
             # Build the run_fuzzer command.
@@ -1414,9 +1419,10 @@ def _prepare_corpus_snapshot(args):
             run_fuzzer(parsed_args)
 
         finally:
-            # Terminate the backup script after the fuzzer completes.
-            backup_process.send_signal(signal.SIGTERM)
-            backup_process.wait()
+            if not ".so" in fuzzer_name:
+              # Terminate the backup script after the fuzzer completes.
+              backup_process.send_signal(signal.SIGTERM)
+              backup_process.wait()
 
     return True
 
