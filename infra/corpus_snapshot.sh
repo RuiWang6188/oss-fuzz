@@ -1,5 +1,4 @@
 #!/bin/bash
-
 # Check for required arguments
 if [ "$#" -ne 2 ]; then
     echo "Usage: $0 CORPUS_DIR BACKUP_BASE"
@@ -14,8 +13,8 @@ BACKUP_BASE="$2"
 mkdir -p "$BACKUP_BASE"
 
 while true; do
-    # Wait for 10 seconds before the next backup
-    sleep 10
+    # Wait for 10 mins before the next backup
+    sleep 600
 
     # Check if there are any files (not directories) in CORPUS_DIR that don't contain a '.' in the filename
     if [ -z "$(find "$CORPUS_DIR" -maxdepth 1 -type f ! -name "*.*" -print -quit)" ]; then
