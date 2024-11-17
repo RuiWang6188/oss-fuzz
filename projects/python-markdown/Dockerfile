@@ -16,3 +16,6 @@ FROM gcr.io/oss-fuzz-base/base-builder-python
 RUN git clone https://github.com/python-markdown/markdown markdown
 COPY *.sh *py $SRC/
 WORKDIR $SRC/markdown
+
+RUN git fetch --depth=1 origin 0b5e80efbb83f119e0e38801bf5b5b5864c67cd0
+RUN git reset --hard 0b5e80efbb83f119e0e38801bf5b5b5864c67cd0

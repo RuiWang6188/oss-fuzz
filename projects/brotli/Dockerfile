@@ -20,3 +20,6 @@ RUN apt-get update && apt-get install -y cmake libtool make
 RUN git clone --depth 1 https://github.com/google/brotli.git
 WORKDIR brotli
 COPY build.sh $SRC/
+
+RUN git fetch --depth=1 origin a4d0581dfdf4db2bff1a4d3e35a92f370d3508de
+RUN git reset --hard a4d0581dfdf4db2bff1a4d3e35a92f370d3508de

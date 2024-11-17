@@ -18,3 +18,6 @@ FROM gcr.io/oss-fuzz-base/base-builder-python
 RUN git clone --depth 1 --branch rel_1_3 https://github.com/sqlalchemy/sqlalchemy
 WORKDIR $SRC/sqlalchemy
 COPY build.sh sqlalchemy_fuzzer.py $SRC/
+
+RUN git fetch --depth=1 origin 5ad094729b8432cf0b1e08c03caa44f37ab68f88
+RUN git reset --hard 5ad094729b8432cf0b1e08c03caa44f37ab68f88

@@ -18,3 +18,7 @@ RUN pip3 install --upgrade pip
 RUN git clone https://github.com/Alir3z4/html2text html2text
 COPY *.sh *py $SRC/
 WORKDIR $SRC/html2text
+
+RUN git fetch --depth=1 origin 8917f5c83d8cf013110124a6b37331b2c29a0fff
+RUN git reset --hard 8917f5c83d8cf013110124a6b37331b2c29a0fff
+

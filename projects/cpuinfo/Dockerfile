@@ -19,3 +19,6 @@ RUN apt-get update && apt-get install -y make autoconf automake libtool
 RUN git clone --depth 1 https://github.com/pytorch/cpuinfo
 WORKDIR cpuinfo
 COPY build.sh *.c $SRC/
+
+RUN git fetch --depth=1 origin 8df44962d437a0477f07ba6b8843d0b6a48646a4
+RUN git reset --hard 8df44962d437a0477f07ba6b8843d0b6a48646a4

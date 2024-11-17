@@ -19,3 +19,6 @@ RUN apt update && apt install -y python3
 RUN git clone --depth 1 https://github.com/jarro2783/cxxopts.git cxxopts
 WORKDIR cxxopts
 COPY build.sh $SRC/
+
+RUN git fetch --depth=1 origin 10a7a647791fa3a24ec4f572f2573a6e0aaa881b
+RUN git reset --hard 10a7a647791fa3a24ec4f572f2573a6e0aaa881b

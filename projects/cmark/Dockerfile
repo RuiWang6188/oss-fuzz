@@ -19,3 +19,6 @@ RUN apt-get update && apt-get install -y make cmake python3
 RUN git clone --depth 1 https://github.com/commonmark/cmark.git cmark
 WORKDIR cmark
 COPY build.sh *.dict *.options $SRC/
+
+RUN git fetch --depth=1 origin 9d74662f4b12f0c7c2f610231a47348fe8b7b619
+RUN git reset --hard 9d74662f4b12f0c7c2f610231a47348fe8b7b619

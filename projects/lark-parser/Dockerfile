@@ -18,3 +18,6 @@ RUN pip3 install --upgrade pip
 RUN git clone https://github.com/lark-parser/lark lark
 COPY *.sh *py $SRC/
 WORKDIR $SRC/lark
+
+RUN git fetch --depth=1 origin 24f19a35f376b9320d53f4d987793fb8b1765f37
+RUN git reset --hard 24f19a35f376b9320d53f4d987793fb8b1765f37

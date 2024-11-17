@@ -30,3 +30,9 @@ RUN git clone --depth 1 https://github.com/protobuf-c/protobuf-c.git -b next
 RUN git clone --depth 1 https://github.com/guidovranken/fuzzing-headers.git
 RUN git clone --depth 1 https://github.com/guidovranken/protobuf-c-fuzzers.git
 COPY build.sh $SRC/
+
+WORKDIR $SRC/protobuf-c
+RUN git fetch --depth=1 origin e05528c871ef89d6578b9b1b911f0d774de910eb
+RUN git reset --hard e05528c871ef89d6578b9b1b911f0d774de910eb
+
+WORKDIR $SRC

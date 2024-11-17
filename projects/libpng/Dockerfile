@@ -22,3 +22,6 @@ RUN git clone --depth 1 https://github.com/madler/zlib.git
 RUN git clone --depth 1 https://github.com/pnggroup/libpng.git
 RUN cp libpng/contrib/oss-fuzz/build.sh $SRC
 WORKDIR libpng
+
+RUN git fetch --depth=1 origin c1cc0f3f4c3d4abd11ca68c59446a29ff6f95003
+RUN git reset --hard c1cc0f3f4c3d4abd11ca68c59446a29ff6f95003

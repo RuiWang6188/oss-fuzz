@@ -22,3 +22,6 @@ RUN git clone --depth 1 https://github.com/AdaLogics/fuzz-headers fuzz-headers
 RUN git clone --depth 1 https://github.com/libfuse/libfuse libfuse
 WORKDIR libfuse
 COPY build.sh *.c $SRC/
+
+RUN git fetch --depth=1 origin 8a3746fe0efb7485bf521dff89dd7dfc735b6879
+RUN git reset --hard 8a3746fe0efb7485bf521dff89dd7dfc735b6879

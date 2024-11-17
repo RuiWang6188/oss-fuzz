@@ -19,3 +19,6 @@ RUN apt-get update && apt install -y automake autoconf libtool pkg-config python
 RUN git clone --depth 1 https://github.com/varnishcache/varnish-cache
 COPY build.sh $SRC
 WORKDIR $SRC/varnish-cache
+
+RUN git fetch --depth=1 origin 41059cf6815d0f366a5145fdb69d310e37e6d380
+RUN git reset --hard 41059cf6815d0f366a5145fdb69d310e37e6d380
