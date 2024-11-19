@@ -1387,7 +1387,7 @@ def _prepare_corpus_snapshot(args):
               os.makedirs(backup_base_dir)
 
           # Path to the backup script.
-          backup_script_path = os.path.join(OSS_FUZZ_DIR, 'infra', 'corpus_snapshot.sh')  # Replace with the actual path
+          backup_script_path = os.path.join(OSS_FUZZ_DIR, 'infra', 'corpus_snapshot_new.sh')  # Replace with the actual path
 
           logger.info(f"Backing up {fuzzer_name} corpus to {backup_base_dir}, Using {backup_script_path}")
 
