@@ -1,4 +1,5 @@
 #!/bin/bash
+
 # Check for required arguments
 if [ "$#" -ne 2 ]; then
     echo "Usage: $0 CORPUS_DIR BACKUP_BASE"
@@ -12,43 +13,48 @@ BACKUP_BASE="$2"
 # Ensure the backup base directory exists
 mkdir -p "$BACKUP_BASE"
 
-while true; do
-    # Wait for 60 seconds before the next backup check
-    sleep 60
+# Record the start time
+START_TIME=$(date +%s)
 
-    # Check if there are any files (not directories) in CORPUS_DIR that don't contain a '.' in the filename
-    if [ -z "$(find "$CORPUS_DIR" -maxdepth 1 -type f ! -name "*.*" -print -quit)" ]; then
-        continue
+# Define backup times in seconds from the start
+BACKUP_TIMES=(60 3600 86400 604800)  # 1 min, 1 hr, 1 day, 1 week
+
+# Keep track of backups done
+BACKUPS_DONE=0
+
+# List to keep track of backup directories
+BACKUP_DIRS=()
+
+while [ $BACKUPS_DONE -lt 4 ]; do
+    # Calculate how much time to sleep until the next backup time
+    CURRENT_TIME=$(date +%s)
+    ELAPSED_TIME=$((CURRENT_TIME - START_TIME))
+    NEXT_BACKUP_TIME=${BACKUP_TIMES[$BACKUPS_DONE]}
+    SLEEP_TIME=$((NEXT_BACKUP_TIME - ELAPSED_TIME))
+
+    if [ $SLEEP_TIME -gt 0 ]; then
+        sleep $SLEEP_TIME
     fi
 
-    CURRENT_TIME=$(date +%s)
+    # Proceed with backup
 
-    # Function to perform backup if the time difference exceeds the interval
-    backup_if_needed() {
-        TIMESTAMP=$(date +"%Y%m%d%H%M%S")
-        local BACKUP_NAME=$1
-        local INTERVAL_SECONDS=$2
+    # Get the current timestamp
+    TIMESTAMP=$(date +"%Y%m%d%H%M%S")
 
-        local BACKUP_DIR="$BACKUP_BASE/${BACKUP_NAME}_${TIMESTAMP}"
+    # Define the current backup directory
+    CURRENT_BACKUP="$BACKUP_BASE/backup_$TIMESTAMP"
 
-        if [ -d "$BACKUP_DIR" ]; then
-            LAST_BACKUP_TIME=$(stat -c %Y "$BACKUP_DIR")
-            TIME_DIFF=$((CURRENT_TIME - LAST_BACKUP_TIME))
-            if [ "$TIME_DIFF" -ge "$INTERVAL_SECONDS" ]; then
-                rsync -a --delete --exclude='*/' --exclude='*.*' "$CORPUS_DIR/" "$BACKUP_DIR"
-                touch "$BACKUP_DIR"  # Update the modification time
-            fi
-        else
-            # Backup directory doesn't exist, perform initial backup
-            rsync -a --delete --exclude='*/' --exclude='*.*' "$CORPUS_DIR/" "$BACKUP_DIR"
-            touch "$BACKUP_DIR"  # Set the modification time
-        fi
-    }
+    # Determine the latest backup directory for --link-dest
+    if [ ${#BACKUP_DIRS[@]} -gt 0 ]; then
+        LATEST_BACKUP="${BACKUP_DIRS[-1]}"
+        rsync -a --link-dest="$LATEST_BACKUP" --exclude='*/' --exclude='*.*' "$CORPUS_DIR/" "$CURRENT_BACKUP"
+    else
+        rsync -a --exclude='*/' --exclude='*.*' "$CORPUS_DIR/" "$CURRENT_BACKUP"
+    fi
 
-    # Perform backups as needed
-    backup_if_needed "backup_minute" 60              # 60 seconds = 1 minute
-    backup_if_needed "backup_hour" $((60 * 60))      # 3600 seconds = 1 hour
-    backup_if_needed "backup_day" $((60 * 60 * 24))  # 86400 seconds = 1 day
-    backup_if_needed "backup_week" $((60 * 60 * 24 * 7))  # 604800 seconds = 7 days
+    # Add current backup to the list
+    BACKUP_DIRS+=("$CURRENT_BACKUP")
 
+    # Increment backups done
+    BACKUPS_DONE=$((BACKUPS_DONE + 1))
 done
