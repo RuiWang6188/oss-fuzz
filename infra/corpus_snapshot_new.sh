@@ -13,6 +13,17 @@ BACKUP_BASE="$2"
 # Ensure the backup base directory exists
 mkdir -p "$BACKUP_BASE"
 
+# List to keep track of backup directories
+BACKUP_DIRS=()
+
+while true; do
+    # Check if there are any files (not directories) in CORPUS_DIR that don't contain a '.' in the filename
+    if [ -z "$(find "$CORPUS_DIR" -maxdepth 1 -type f ! -name "*.*" -print -quit)" ]; then
+        continue
+    fi
+    break
+done
+
 # Record the start time
 START_TIME=$(date +%s)
 
@@ -22,10 +33,8 @@ BACKUP_TIMES=(60 3600 86400 604800)  # 1 min, 1 hr, 1 day, 1 week
 # Keep track of backups done
 BACKUPS_DONE=0
 
-# List to keep track of backup directories
-BACKUP_DIRS=()
-
 while [ $BACKUPS_DONE -lt 4 ]; do
+
     # Calculate how much time to sleep until the next backup time
     CURRENT_TIME=$(date +%s)
     ELAPSED_TIME=$((CURRENT_TIME - START_TIME))

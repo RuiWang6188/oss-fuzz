@@ -110,6 +110,7 @@ COPY bad_build_check \
     rcfilt \
     reproduce \
     run_fuzzer \
+    run_fuzzer_new \
     parse_options.py \
     generate_differential_cov_report.py \
     profraw_update.py \
