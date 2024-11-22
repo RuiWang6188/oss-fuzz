@@ -242,6 +242,8 @@ def main():  # pylint: disable=too-many-branches,too-many-return-statements
     result = coverage(args)
   elif args.command == 'coverage-new':
     result = coverage_new(args)    
+  elif args.command == 'generate-corpus':
+    result = generate_corpus(args)
   elif args.command == 'introspector':
     result = introspector(args)
   elif args.command == 'reproduce':
@@ -478,6 +480,19 @@ def get_parser():  # pylint: disable=too-many-statements,too-many-locals
                                nargs='*')
   _add_external_project_args(coverage_new_parser)
   _add_architecture_args(coverage_new_parser)
+
+  generate_corpus_parser = subparsers.add_parser(
+      'generate-corpus', help='Generate the corpus by fuzzing for a given time.')
+  generate_corpus_parser.add_argument('project', help='name of the project')
+  generate_corpus_parser.add_argument('--seconds',
+                                      help='number of seconds to run fuzzers',
+                                      default=10)
+  generate_corpus_parser.add_argument('extra_args',
+                               help='additional arguments to '
+                               'pass to llvm-cov utility.',
+                               nargs='*')
+  _add_external_project_args(generate_corpus_parser)
+  _add_architecture_args(generate_corpus_parser)
 
   introspector_parser = subparsers.add_parser(
       'introspector',
@@ -1425,6 +1440,23 @@ def _prepare_corpus_snapshot(args):
               backup_process.wait()
 
     return True
+
+def generate_corpus(args):
+  parser = get_parser()
+  args_to_append = []
+
+  # Build fuzzers with ASAN.
+  build_fuzzers_command = [
+      'build_fuzzers', '--sanitizer=address', args.project.name
+  ] + args_to_append
+  if not build_fuzzers(parse_args(parser, build_fuzzers_command)):
+    logger.error('Failed to build project with ASAN')
+    return False
+
+  if not _prepare_corpus_snapshot(args):
+    return False
+
+  return True
 
 
 def coverage_new(args):
