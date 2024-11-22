@@ -24,46 +24,24 @@ while true; do
     break
 done
 
-# Record the start time
-START_TIME=$(date +%s)
+# Take the first snapshot after 1 minute
+sleep 60
 
-# Define backup times in seconds from the start
-BACKUP_TIMES=(60 3600 86400 604800)  # 1 min, 1 hr, 1 day, 1 week
+TIMESTAMP=$(date +"%Y%m%d%H%M%S")
 
-# Keep track of backups done
-BACKUPS_DONE=0
+CURRENT_BACKUP="$BACKUP_BASE/backup_$TIMESTAMP"
+rsync -a --exclude='*/' --exclude='*.*' "$CORPUS_DIR/" "$CURRENT_BACKUP"
 
-while [ $BACKUPS_DONE -lt 4 ]; do
+while true; do
+    sleep 600   # Take a snapshot every 10 minutes
 
-    # Calculate how much time to sleep until the next backup time
-    CURRENT_TIME=$(date +%s)
-    ELAPSED_TIME=$((CURRENT_TIME - START_TIME))
-    NEXT_BACKUP_TIME=${BACKUP_TIMES[$BACKUPS_DONE]}
-    SLEEP_TIME=$((NEXT_BACKUP_TIME - ELAPSED_TIME))
-
-    if [ $SLEEP_TIME -gt 0 ]; then
-        sleep $SLEEP_TIME
-    fi
-
-    # Proceed with backup
-
-    # Get the current timestamp
     TIMESTAMP=$(date +"%Y%m%d%H%M%S")
 
-    # Define the current backup directory
+    # Define the current and previous backup directories
     CURRENT_BACKUP="$BACKUP_BASE/backup_$TIMESTAMP"
+    LATEST_BACKUP=$(ls -1dt "$BACKUP_BASE"/backup_* 2>/dev/null | head -1)
 
-    # Determine the latest backup directory for --link-dest
-    if [ ${#BACKUP_DIRS[@]} -gt 0 ]; then
-        LATEST_BACKUP="${BACKUP_DIRS[-1]}"
-        rsync -a --link-dest="$LATEST_BACKUP" --exclude='*/' --exclude='*.*' "$CORPUS_DIR/" "$CURRENT_BACKUP"
-    else
-        rsync -a --exclude='*/' --exclude='*.*' "$CORPUS_DIR/" "$CURRENT_BACKUP"
-    fi
+    # Use rsync with --link-dest to create a new snapshot with hard links, excluding directories and files with '.'
+    rsync -a --link-dest="$LATEST_BACKUP" --exclude='*/' --exclude='*.*' "$CORPUS_DIR/" "$CURRENT_BACKUP"
 
-    # Add current backup to the list
-    BACKUP_DIRS+=("$CURRENT_BACKUP")
-
-    # Increment backups done
-    BACKUPS_DONE=$((BACKUPS_DONE + 1))
 done
