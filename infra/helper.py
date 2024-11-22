@@ -244,6 +244,8 @@ def main():  # pylint: disable=too-many-branches,too-many-return-statements
     result = coverage_new(args)    
   elif args.command == 'generate-corpus':
     result = generate_corpus(args)
+  elif args.command == 'corpus-coverage':
+    result = corpus_coverage(args)
   elif args.command == 'introspector':
     result = introspector(args)
   elif args.command == 'reproduce':
@@ -493,6 +495,16 @@ def get_parser():  # pylint: disable=too-many-statements,too-many-locals
                                nargs='*')
   _add_external_project_args(generate_corpus_parser)
   _add_architecture_args(generate_corpus_parser)
+
+  corpus_coverage_parser = subparsers.add_parser(
+      'corpus-coverage', help='Generate code coverage report for the corpus of a given project.')
+  corpus_coverage_parser.add_argument('project', help='name of the project')
+  corpus_coverage_parser.add_argument('extra_args',
+                                help='additional arguments to '
+                                'pass to llvm-cov utility.',
+                                nargs='*')
+  _add_external_project_args(corpus_coverage_parser)
+  _add_architecture_args(corpus_coverage_parser)
 
   introspector_parser = subparsers.add_parser(
       'introspector',
@@ -1458,6 +1470,25 @@ def generate_corpus(args):
 
   return True
 
+def corpus_coverage(args):
+  parser = get_parser()
+
+  # Build code coverage.
+  build_fuzzers_command = [
+      'build_fuzzers', '--sanitizer=coverage', args.project.name
+  ]
+  if not build_fuzzers(parse_args(parser, build_fuzzers_command)):
+    logger.error('Failed to build project with coverage instrumentation')
+    return False
+
+  # Collect coverage.
+  coverage_command = [
+      'coverage', '--no-corpus-download', '--port', '', args.project.name
+  ]
+  if not coverage(parse_args(parser, coverage_command), snapshot=True):
+    logger.error('Failed to extract coverage')
+    return False
+  return True
 
 def coverage_new(args):
   parser = get_parser()
