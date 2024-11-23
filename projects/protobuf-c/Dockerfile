@@ -28,7 +28,7 @@ RUN apt-get update && apt-get install -y \
 
 RUN git clone --depth 1 https://github.com/protobuf-c/protobuf-c.git -b next
 RUN git clone --depth 1 https://github.com/guidovranken/fuzzing-headers.git
-RUN git clone --depth 1 https://github.com/guidovranken/protobuf-c-fuzzers.git
+RUN git clone --depth 1 https://github.com/RuiWang6188/protobuf-c-fuzzers.git
 COPY build.sh $SRC/
 
 WORKDIR $SRC/protobuf-c
