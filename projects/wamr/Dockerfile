@@ -41,4 +41,7 @@ RUN cd /opt \
 RUN git clone --depth 1 https://github.com/bytecodealliance/wasm-micro-runtime wamr
 WORKDIR wamr
 
+RUN git fetch --depth=1 origin 0119b17526ae447c5c57784d9deb90c04af51fe5
+RUN git reset --hard 0119b17526ae447c5c57784d9deb90c04af51fe5
+
 COPY build.sh $SRC/

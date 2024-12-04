@@ -24,4 +24,8 @@ RUN sed -i -e '/^#\s*deb-src.*\smain\s\+restricted/s/^#//' /etc/apt/sources.list
     apt-get install -y --no-install-recommends libz-dev libz-dev:i386
 RUN git clone --depth 1 https://github.com/libbpf/libbpf
 WORKDIR libbpf
+
+RUN git fetch --depth=1 origin c5f22aca0f3aa855daa159b2777472b35e721804
+RUN git reset --hard c5f22aca0f3aa855daa159b2777472b35e721804
+
 COPY build.sh $SRC/

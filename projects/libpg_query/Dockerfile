@@ -17,4 +17,8 @@
 FROM gcr.io/oss-fuzz-base/base-builder
 RUN git clone --depth 1 https://github.com/pganalyze/libpg_query libpg_query
 WORKDIR libpg_query
+
+RUN git fetch --depth=1 origin e1a98c31d90981cdfdba3c734a60e5abf9c522c2
+RUN git reset --hard e1a98c31d90981cdfdba3c734a60e5abf9c522c2
+
 COPY build.sh $SRC/

@@ -23,4 +23,8 @@ RUN corpus-replicator -o corpus video_h264_264_libx264.yml video
 RUN mv openh264/res/*.264 corpus/
 RUN zip -j0r decoder_fuzzer_seed_corpus.zip corpus/
 WORKDIR openh264
+
+RUN git fetch --depth=1 origin 6746bc48f1ee9b3165200a8fad329acfdf01621b
+RUN git reset --hard 6746bc48f1ee9b3165200a8fad329acfdf01621b
+
 COPY build.sh decoder_fuzzer.cpp $SRC/

@@ -19,4 +19,7 @@ RUN git clone https://github.com/Exiv2/exiv2 exiv2
 RUN ./exiv2/ci/install_dependencies.sh
 WORKDIR exiv2
 
+RUN git fetch --depth=1 origin 66c3cda1835248df8ece24464b4546314d0233a7
+RUN git reset --hard 66c3cda1835248df8ece24464b4546314d0233a7
+
 COPY build.sh $SRC/

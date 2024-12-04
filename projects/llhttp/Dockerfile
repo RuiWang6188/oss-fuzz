@@ -21,4 +21,8 @@ RUN bash nodesource_setup.sh
 RUN apt install -y nodejs
 RUN git clone --depth 1 https://github.com/nodejs/llhttp llhttp
 WORKDIR llhttp
+
+RUN git fetch --depth=1 origin 8371b40077c0177d743bb3dfed7e2b56cba18328
+RUN git reset --hard 8371b40077c0177d743bb3dfed7e2b56cba18328
+
 COPY build.sh $SRC/

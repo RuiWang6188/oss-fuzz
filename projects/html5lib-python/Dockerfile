@@ -16,3 +16,6 @@ FROM gcr.io/oss-fuzz-base/base-builder-python
 RUN git clone https://github.com/html5lib/html5lib-python html5lib-python
 COPY *.sh *py $SRC/
 WORKDIR $SRC/html5lib-python
+
+RUN git fetch --depth=1 origin fd4f032bc090d44fb11a84b352dad7cbee0a4745
+RUN git reset --hard fd4f032bc090d44fb11a84b352dad7cbee0a4745

@@ -23,4 +23,8 @@ RUN git clone https://www.cl.cam.ac.uk/~mgk25/git/jbigkit
 ADD https://lcamtuf.coredump.cx/afl/demo/afl_testcases.tgz afl_testcases.tgz
 ADD https://raw.githubusercontent.com/google/AFL/debe27037b9444bbf090a0ffbd5d24889bb887ae/dictionaries/tiff.dict tiff.dict
 WORKDIR libtiff
+
+RUN git fetch --depth=1 origin 97aa7f403e35a1e2975fe38cdd0312ce5c420c3a
+RUN git reset --hard 97aa7f403e35a1e2975fe38cdd0312ce5c420c3a
+
 COPY build.sh $SRC/

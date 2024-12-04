@@ -18,5 +18,9 @@ FROM gcr.io/oss-fuzz-base/base-builder
 RUN apt-get update && apt-get install -y libgc-dev
 RUN git clone https://github.com/tats/w3m
 
+WORKDIR w3m
+RUN git fetch --depth=1 origin ee66aabc3987000c2851bce6ade4dcbb0b037d81
+RUN git reset --hard ee66aabc3987000c2851bce6ade4dcbb0b037d81
+
 WORKDIR $SRC
 COPY build.sh $SRC/
