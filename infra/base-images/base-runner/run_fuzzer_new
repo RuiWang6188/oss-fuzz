@@ -218,7 +218,7 @@ fi
 echo $CMD_LINE
 
 CMD_LINE="$CMD_LINE > /out/fuzzer_output.log 2>&1"
-CMD_LINE="timeout 30 $CMD_LINE"
+CMD_LINE="timeout 60 $CMD_LINE"
 echo $CMD_LINE
 
 # Unset OUT so the fuzz target can't rely on it.
