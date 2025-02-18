@@ -109,37 +109,37 @@ ENV FUZZER_LDFLAGS ""
 
 WORKDIR $SRC
 
-RUN git clone https://github.com/AFLplusplus/AFLplusplus.git aflplusplus && \
-    cd aflplusplus && \
-    git checkout daaefcddc063b356018c29027494a00bcfc3e240 && \
-    wget --no-check-certificate -O oss.sh https://raw.githubusercontent.com/vanhauser-thc/binary_blobs/master/oss.sh && \
-    rm -rf .git && \
-    chmod 755 oss.sh
+# RUN git clone https://github.com/AFLplusplus/AFLplusplus.git aflplusplus && \
+#     cd aflplusplus && \
+#     git checkout daaefcddc063b356018c29027494a00bcfc3e240 && \
+#     wget --no-check-certificate -O oss.sh https://raw.githubusercontent.com/vanhauser-thc/binary_blobs/master/oss.sh && \
+#     rm -rf .git && \
+#     chmod 755 oss.sh
 
-# Do precompiles before copying other scripts for better cache efficiency.
-COPY precompile_afl /usr/local/bin/
-RUN precompile_afl
+# # Do precompiles before copying other scripts for better cache efficiency.
+# COPY precompile_afl /usr/local/bin/
+# RUN precompile_afl
 
-RUN cd $SRC && \
-    curl -L -O https://github.com/google/honggfuzz/archive/oss-fuzz.tar.gz && \
-    mkdir honggfuzz && \
-    cd honggfuzz && \
-    tar -xz --strip-components=1 -f $SRC/oss-fuzz.tar.gz && \
-    rm -rf examples $SRC/oss-fuzz.tar.gz
+# RUN cd $SRC && \
+#     curl -L -O https://github.com/google/honggfuzz/archive/oss-fuzz.tar.gz && \
+#     mkdir honggfuzz && \
+#     cd honggfuzz && \
+#     tar -xz --strip-components=1 -f $SRC/oss-fuzz.tar.gz && \
+#     rm -rf examples $SRC/oss-fuzz.tar.gz
 
 
-COPY precompile_honggfuzz /usr/local/bin/
-RUN precompile_honggfuzz
+# COPY precompile_honggfuzz /usr/local/bin/
+# RUN precompile_honggfuzz
 
-RUN cd $SRC && \
-    git clone https://github.com/google/fuzztest && \
-    cd fuzztest && \
-    git checkout a37d133f714395cabc20dd930969a889495c9f53 && \
-    rm -rf .git
+# RUN cd $SRC && \
+#     git clone https://github.com/google/fuzztest && \
+#     cd fuzztest && \
+#     git checkout a37d133f714395cabc20dd930969a889495c9f53 && \
+#     rm -rf .git
 
-ENV CENTIPEDE_BIN_DIR=$SRC/fuzztest/bazel-bin
-COPY precompile_centipede /usr/local/bin/
-RUN precompile_centipede
+# ENV CENTIPEDE_BIN_DIR=$SRC/fuzztest/bazel-bin
+# COPY precompile_centipede /usr/local/bin/
+# RUN precompile_centipede
 
 COPY sanitizers /usr/local/lib/sanitizers
 

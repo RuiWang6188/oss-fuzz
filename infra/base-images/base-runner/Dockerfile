@@ -60,44 +60,44 @@ ENV UBSAN_OPTIONS="print_stacktrace=1:print_summary=1:silence_unsigned_overflow=
 ENV FUZZER_ARGS="-rss_limit_mb=2560 -timeout=25"
 ENV AFL_FUZZER_ARGS="-m none"
 
-# Set up Golang environment variables (copied from /root/.bash_profile).
-ENV GOPATH /root/go
+# # Set up Golang environment variables (copied from /root/.bash_profile).
+# ENV GOPATH /root/go
 
-# /root/.go/bin is for the standard Go binaries (i.e. go, gofmt, etc).
-# $GOPATH/bin is for the binaries from the dependencies installed via "go get".
-ENV PATH $PATH:$GOPATH/bin
-COPY gocoverage $GOPATH/gocoverage
+# # /root/.go/bin is for the standard Go binaries (i.e. go, gofmt, etc).
+# # $GOPATH/bin is for the binaries from the dependencies installed via "go get".
+# ENV PATH $PATH:$GOPATH/bin
+# COPY gocoverage $GOPATH/gocoverage
 
-COPY install_go.sh /
-RUN /install_go.sh
-RUN rm -rf /install_go.sh /root/.go
+# COPY install_go.sh /
+# RUN /install_go.sh
+# RUN rm -rf /install_go.sh /root/.go
 
-# Install OpenJDK 15 and trim its size by removing unused components.
-ENV JAVA_HOME=/usr/lib/jvm/java-17-openjdk-amd64
-ENV JAVA_15_HOME=/usr/lib/jvm/java-15-openjdk-amd64
-ENV JVM_LD_LIBRARY_PATH=$JAVA_HOME/lib/server
-ENV PATH=$PATH:$JAVA_HOME/bin
+# # Install OpenJDK 15 and trim its size by removing unused components.
+# ENV JAVA_HOME=/usr/lib/jvm/java-17-openjdk-amd64
+# ENV JAVA_15_HOME=/usr/lib/jvm/java-15-openjdk-amd64
+# ENV JVM_LD_LIBRARY_PATH=$JAVA_HOME/lib/server
+# ENV PATH=$PATH:$JAVA_HOME/bin
 
-COPY install_java.sh /
-RUN /install_java.sh && rm /install_java.sh
+# COPY install_java.sh /
+# RUN /install_java.sh && rm /install_java.sh
 
-# Install JaCoCo for JVM coverage.
-RUN wget https://repo1.maven.org/maven2/org/jacoco/org.jacoco.cli/0.8.7/org.jacoco.cli-0.8.7-nodeps.jar -O /opt/jacoco-cli.jar && \
-    wget https://repo1.maven.org/maven2/org/jacoco/org.jacoco.agent/0.8.7/org.jacoco.agent-0.8.7-runtime.jar -O /opt/jacoco-agent.jar && \
-    echo "37df187b76888101ecd745282e9cd1ad4ea508d6  /opt/jacoco-agent.jar" | shasum --check && \
-    echo "c1814e7bba5fd8786224b09b43c84fd6156db690  /opt/jacoco-cli.jar" | shasum --check
+# # Install JaCoCo for JVM coverage.
+# RUN wget https://repo1.maven.org/maven2/org/jacoco/org.jacoco.cli/0.8.7/org.jacoco.cli-0.8.7-nodeps.jar -O /opt/jacoco-cli.jar && \
+#     wget https://repo1.maven.org/maven2/org/jacoco/org.jacoco.agent/0.8.7/org.jacoco.agent-0.8.7-runtime.jar -O /opt/jacoco-agent.jar && \
+#     echo "37df187b76888101ecd745282e9cd1ad4ea508d6  /opt/jacoco-agent.jar" | shasum --check && \
+#     echo "c1814e7bba5fd8786224b09b43c84fd6156db690  /opt/jacoco-cli.jar" | shasum --check
 
-COPY install_javascript.sh /
-RUN /install_javascript.sh && rm /install_javascript.sh
+# COPY install_javascript.sh /
+# RUN /install_javascript.sh && rm /install_javascript.sh
 
-# Copy built ruby and ruzzy from builder
-COPY --from=base-ruby /usr/local/rvm /usr/local/rvm
-COPY --from=base-ruby /install/ruzzy /install/ruzzy
-COPY ruzzy /usr/bin/ruzzy
-ENV PATH="$PATH:/usr/local/rvm/rubies/ruby-3.3.1/bin"
-# RubyGems installation directory
-ENV GEM_HOME="$OUT/fuzz-gem"
-ENV GEM_PATH="/install/ruzzy"
+# # Copy built ruby and ruzzy from builder
+# COPY --from=base-ruby /usr/local/rvm /usr/local/rvm
+# COPY --from=base-ruby /install/ruzzy /install/ruzzy
+# COPY ruzzy /usr/bin/ruzzy
+# ENV PATH="$PATH:/usr/local/rvm/rubies/ruby-3.3.1/bin"
+# # RubyGems installation directory
+# ENV GEM_HOME="$OUT/fuzz-gem"
+# ENV GEM_PATH="/install/ruzzy"
 
 # Do this last to make developing these files easier/faster due to caching.
 COPY bad_build_check \
