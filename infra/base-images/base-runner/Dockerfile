@@ -48,7 +48,8 @@ RUN git clone https://chromium.googlesource.com/chromium/src/tools/code_coverage
     pip3 install wheel && \
     pip3 install -r requirements.txt && \
     pip3 install MarkupSafe==0.23 && \
-    pip3 install coverage==6.3.2
+    pip3 install coverage==6.3.2 && \
+    pip3 install atheris
 
 # Default environment options for various sanitizers.
 # Note that these match the settings used in ClusterFuzz and
@@ -111,6 +112,7 @@ COPY bad_build_check \
     reproduce \
     run_fuzzer \
     run_fuzzer_new \
+    run_fuzzer_coverage \
     parse_options.py \
     generate_differential_cov_report.py \
     profraw_update.py \
