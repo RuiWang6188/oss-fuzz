@@ -53,4 +53,4 @@ echo "CMD_LINE: $CMD_LINE"
 # # Unset OUT so the fuzz target can't rely on it.
 unset OUT
 
-time bash -c "$CMD_LINE || $COVERAGE_CMD"
+time bash -c "$CMD_LINE ; $COVERAGE_CMD"
