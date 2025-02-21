@@ -53,4 +53,12 @@ echo "CMD_LINE: $CMD_LINE"
 # # Unset OUT so the fuzz target can't rely on it.
 unset OUT
 
-time bash -c "$CMD_LINE ; $COVERAGE_CMD"
+time bash -c '
+  set -m;  # Enable job control
+  timeout --foreground -k 60 60 python3 -m coverage run --rcfile=/out/.coveragerc /out/fuzzer_instrumented.py > /out/fuzzer_output.log 2>&1;
+  if [ -s /out/.coverage ]; then
+    timeout 30 python3 -m coverage json --data-file=/out/.coverage -o /out/coverage.json;
+  else
+    echo "No coverage data found";
+  fi
+'
