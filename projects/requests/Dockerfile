@@ -33,3 +33,7 @@ RUN git clone --depth 1 https://github.com/google/fuzzing fuzzing \
 
 COPY build.sh *.py $SRC/
 WORKDIR $SRC/requests
+
+RUN git fetch --depth=1 origin 0e322af87745eff34caffe4df68456ebc20d9068
+RUN git reset --hard 0e322af87745eff34caffe4df68456ebc20d9068
+

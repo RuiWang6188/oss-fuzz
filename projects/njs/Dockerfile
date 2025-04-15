@@ -22,3 +22,6 @@ RUN git clone --branch pcre2-10.39 https://github.com/PhilipHazel/pcre2 pcre2
 
 WORKDIR njs
 COPY build.sh $SRC/
+
+RUN git fetch --depth=1 origin 9d3e71ca656b920e3e63b0e647aca8e91669d29a
+RUN git reset --hard 9d3e71ca656b920e3e63b0e647aca8e91669d29a

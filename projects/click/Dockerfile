@@ -16,3 +16,7 @@ FROM gcr.io/oss-fuzz-base/base-builder-python
 RUN git clone https://github.com/pallets/click click
 COPY *.sh *py $SRC/
 WORKDIR $SRC/click
+
+RUN git fetch --depth=1 origin 934813e4d421071a1b3db3973c02fe2721359a6e
+RUN git reset --hard 934813e4d421071a1b3db3973c02fe2721359a6e
+

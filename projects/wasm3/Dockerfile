@@ -19,3 +19,6 @@ RUN apt-get update && apt-get install -y make
 RUN git clone --depth 1 https://github.com/wasm3/wasm3
 WORKDIR wasm3
 COPY build.sh $SRC/
+
+RUN git fetch --depth=1 origin 00b35a122bcc4e694016f281ce28651a7ec527c3
+RUN git reset --hard 00b35a122bcc4e694016f281ce28651a7ec527c3

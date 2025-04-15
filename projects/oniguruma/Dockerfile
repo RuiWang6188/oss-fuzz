@@ -22,3 +22,6 @@ RUN git clone --depth 1 https://github.com/kkos/oniguruma.git oniguruma
 WORKDIR oniguruma
 COPY build.sh $SRC/
 COPY fuzzer.options $SRC/oniguruma/harnesses
+
+RUN git fetch --depth=1 origin 4ef89209a239c1aea328cf13c05a2807e5c146d1
+RUN git reset --hard 4ef89209a239c1aea328cf13c05a2807e5c146d1

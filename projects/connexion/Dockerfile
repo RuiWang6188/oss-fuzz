@@ -18,3 +18,6 @@ RUN git clone --depth=1 https://github.com/python-jsonschema/jsonschema-specific
 RUN git clone https://github.com/spec-first/connexion connexion
 COPY *.sh *py $SRC/
 WORKDIR $SRC/connexion
+
+RUN git fetch --depth=1 origin 1844a2fb3f1d09a37edfeab7a7200d52e97abbd9
+RUN git reset --hard 1844a2fb3f1d09a37edfeab7a7200d52e97abbd9

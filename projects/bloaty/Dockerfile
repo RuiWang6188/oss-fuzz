@@ -19,3 +19,6 @@ RUN apt-get update && apt-get install -y cmake ninja-build g++ libz-dev
 RUN git clone --depth 1 https://github.com/google/bloaty.git bloaty
 WORKDIR bloaty
 COPY build.sh $SRC/
+
+RUN git fetch --depth=1 origin 3f36edba803388e98de51647ca0a23e174dc316f
+RUN git reset --hard 3f36edba803388e98de51647ca0a23e174dc316f

@@ -19,4 +19,8 @@ RUN apt-get update && apt-get install -y make autoconf automake libtool
 RUN pip3 install --upgrade pip && pip3 install cython numpy
 RUN git clone --depth 1 https://github.com/pydata/bottleneck
 WORKDIR bottleneck
+
+RUN git fetch --depth=1 origin 17fbbc73b522ca3aeb281f76e825deab677c91af
+RUN git reset --hard 17fbbc73b522ca3aeb281f76e825deab677c91af
+
 COPY build.sh *.py $SRC/

@@ -20,3 +20,5 @@ RUN git clone --depth 1 --recursive https://github.com/assimp/assimp.git
 WORKDIR assimp
 COPY build.sh $SRC/
 
+RUN git fetch --depth=1 origin c35200e38ea8f058812b83de2ef32c6093b0ece2
+RUN git reset --hard c35200e38ea8f058812b83de2ef32c6093b0ece2

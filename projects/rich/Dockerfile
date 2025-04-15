@@ -17,3 +17,7 @@ RUN pip3 install --upgrade pip
 RUN git clone https://github.com/Textualize/rich rich
 COPY *.sh *py $SRC/
 WORKDIR $SRC/rich
+
+RUN git fetch --depth=1 origin 72e3bb33d44fd96881f7742b77137983907a942f
+RUN git reset --hard 72e3bb33d44fd96881f7742b77137983907a942f
+
