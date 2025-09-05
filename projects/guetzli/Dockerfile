@@ -24,3 +24,7 @@ RUN zip guetzli_fuzzer_seed_corpus.zip afl-testcases/jpeg/full/images/* afl-test
 RUN git clone --depth=1 https://github.com/google/guetzli guetzli
 WORKDIR guetzli
 COPY build.sh $SRC/
+
+RUN git fetch --depth=1 origin 214f2bb42abf5a577c079d00add5d6cc470620d3
+RUN git reset --hard 214f2bb42abf5a577c079d00add5d6cc470620d3
+

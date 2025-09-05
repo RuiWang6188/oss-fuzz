@@ -25,7 +25,8 @@ RUN git clone https://github.com/libevent/libevent.git && \
     cmake -DEVENT__DISABLE_MBEDTLS=ON -DEVENT__DISABLE_OPENSSL=ON -DEVENT__LIBRARY_TYPE=STATIC ../ && \
     make && make install
 
-RUN git clone --depth 1 https://github.com/tmux/tmux.git
-RUN git clone --depth 1 https://github.com/tmux/tmux-fuzzing-corpus.git
 WORKDIR tmux
 COPY build.sh $SRC/
+
+RUN git clone --depth 1 https://github.com/tmux/tmux.git
+RUN git clone --depth 1 https://github.com/tmux/tmux-fuzzing-corpus.git

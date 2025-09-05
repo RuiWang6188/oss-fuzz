@@ -20,6 +20,11 @@ RUN apt-get update && apt-get install -y build-essential zlib1g-dev zlib1g-dev:i
 
 RUN git clone --depth 1 https://github.com/alembic/alembic
 
+WORKDIR alembic
+RUN git fetch --depth=1 origin 43a1489a0f5e15420e4be7225df86e819884b6fa
+RUN git reset --hard 43a1489a0f5e15420e4be7225df86e819884b6fa
+
+WORKDIR $SRC
 # Ubuntu's libilmbase-dev package doesn't include static libraries, so we have
 # to build OpenEXR from source.
 RUN git clone -b v2.5.9 --depth 1 https://github.com/AcademySoftwareFoundation/openexr

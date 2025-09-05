@@ -18,5 +18,9 @@
 FROM gcr.io/oss-fuzz-base/base-builder
 RUN apt-get update && apt-get install -y make autoconf automake
 RUN git clone --depth 1 https://github.com/9fans/plan9port plan9port
+
 WORKDIR plan9port
 COPY build.sh *.c *.diff *.options $SRC/
+
+RUN git fetch --depth=1 origin a20cff92cf8b81b501fd7a075bd74a89bf0194fa
+RUN git reset --hard a20cff92cf8b81b501fd7a075bd74a89bf0194fa

@@ -21,3 +21,7 @@ RUN apt-get update && \
 RUN git clone https://github.com/khronosgroup/glslang glslang
 COPY *_fuzzer.cc *.sh $SRC/
 WORKDIR $SRC/glslang
+
+RUN git fetch --depth=1 origin 9d764997360b202d2ba7aaad9a401e57d8df56b3
+RUN git reset --hard 9d764997360b202d2ba7aaad9a401e57d8df56b3
+

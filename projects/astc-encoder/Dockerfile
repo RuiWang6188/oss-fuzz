@@ -17,5 +17,9 @@
 FROM gcr.io/oss-fuzz-base/base-builder
 RUN apt-get update && apt-get install -y make autoconf automake libtool
 RUN git clone --depth 1 https://github.com/ARM-software/astc-encoder
+WORKDIR astc-encoder
+RUN git fetch --depth=1 origin 701503966b1ac2ebd2616cba94adee5ae8ba6363
+RUN git reset --hard 701503966b1ac2ebd2616cba94adee5ae8ba6363
+
 WORKDIR astc-encoder/Source
 COPY build.sh $SRC/

@@ -17,5 +17,10 @@
 FROM gcr.io/oss-fuzz-base/base-builder
 RUN apt-get update && apt-get install -y make cmake libcurl4-gnutls-dev -qq
 RUN git clone --depth 1 https://github.com/clibs/clib
+
+WORKDIR clib
+RUN git fetch --depth=1 origin 6d96e53349784087d1f0c13aca2c9b6cdf3f4c4c
+RUN git reset --hard 6d96e53349784087d1f0c13aca2c9b6cdf3f4c4c
+
 WORKDIR $SRC/
 COPY build.sh $SRC/
