@@ -17,10 +17,10 @@
 
 #docker build --pull -t gcr.io/oss-fuzz-base/base-image "$@" docker-utils/base-images/base-image
 #docker build -t gcr.io/oss-fuzz-base/base-clang "$@" docker-utils/base-images/base-clang
-#docker build -t gcr.io/oss-fuzz-base/base-builder "$@" docker-utils/base-images/base-builder
+docker build -t gcr.io/oss-fuzz-base/base-builder "$@" docker-utils/base-images/base-builder
 #docker build -t gcr.io/oss-fuzz-base/base-builder-go "$@" docker-utils/base-images/base-builder-go
 #docker build -t gcr.io/oss-fuzz-base/base-builder-jvm "$@" docker-utils/base-images/base-builder-jvm
-#docker build -t gcr.io/oss-fuzz-base/base-builder-python "$@" docker-utils/base-images/base-builder-python
+docker build -t gcr.io/oss-fuzz-base/base-builder-python "$@" docker-utils/base-images/base-builder-python
 #docker build -t gcr.io/oss-fuzz-base/base-builder-rust "$@" docker-utils/base-images/base-builder-rust
 #docker build -t gcr.io/oss-fuzz-base/base-builder-ruby "$@" docker-utils/base-images/base-builder-ruby
 #docker build -t gcr.io/oss-fuzz-base/base-builder-swift "$@" docker-utils/base-images/base-builder-swift
