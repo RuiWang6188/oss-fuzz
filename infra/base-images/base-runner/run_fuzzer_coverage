@@ -17,7 +17,7 @@
 
 # Fuzzer runner. Appends .options arguments and seed corpus to users args.
 # Usage: $0 <project_type>
-# set -x
+set -x
 sysctl -w vm.mmap_rnd_bits=28
 
 export PATH=$OUT:$PATH
@@ -30,35 +30,34 @@ PROJECT_TYPE=$2
 PROJECT_TYPE=$(echo "$PROJECT_TYPE" | tr '[:lower:]' '[:upper:]')
 shift
 
-
-
 if [ "$PROJECT_TYPE" == "PYTHON" ]; then
   pip3 install --upgrade coverage
-  pip3 install -e $OUT/$PROJECT_NAME
+  pip3 install $OUT/$PROJECT_NAME
   echo -e "[run]\nsigterm = True\ndata_file = /out/.coverage" | tee /out/.coveragerc
   CMD_LINE="python3 -m coverage run --rcfile=/out/.coveragerc /out/fuzzer_instrumented.py"
-  # COVERAGE_CMD="python3 -m coverage json --data-file=/out/.coverage --pretty-print -o /out/coverage.json"
   COVERAGE_CMD="python3 -m coverage json --data-file=/out/.coverage -o /out/coverage.json"
+  time bash -c "
+    set -m;  # Enable job control
+    timeout --foreground -k 60 60 $CMD_LINE > /out/fuzzer_output.log 2>&1;
+    if [ -s /out/.coverage ]; then
+      timeout 30 $COVERAGE_CMD > /out/coverage_output.log 2>&1;
+    else
+      echo 'No coverage data found';
+    fi
+  "
 else
-  echo "TODO: C/C++"
-  exit 1
-fi
+  # LLVM_PROFILE_FILE="coverage.profraw" $OUT/fuzzer_instrumented -max_total_time=60 > /out/fuzzer_output.log 2>&1 || true
+  LLVM_PROFILE_FILE="coverage.profraw" $OUT/fuzzer_instrumented -runs=30 > /out/fuzzer_output.log 2>&1 || true
+  llvm-profdata merge -j=1 -sparse coverage.profraw -o coverage.profdata
+  rm coverage.profraw
 
-CMD_LINE="$CMD_LINE > /out/fuzzer_output.log 2>&1"
-CMD_LINE="timeout 60 $CMD_LINE"
-
-# echo "Running $CMD_LINE"
-# echo "CMD_LINE: $CMD_LINE"
-
-# # Unset OUT so the fuzz target can't rely on it.
-unset OUT
-
-time bash -c '
-  set -m;  # Enable job control
-  timeout --foreground -k 60 60 python3 -m coverage run --rcfile=/out/.coveragerc /out/fuzzer_instrumented.py > /out/fuzzer_output.log 2>&1;
-  if [ -s /out/.coverage ]; then
-    timeout 30 python3 -m coverage json --data-file=/out/.coverage -o /out/coverage.json;
+  if [ -s /out/coverage.profdata ]; then
+    llvm-cov export -instr-profile=coverage.profdata \
+      -object=$OUT/fuzzer_instrumented \
+      -path-equivalence=/src,/out \
+      '-ignore-filename-regex=.*src/libfuzzer/.*' \
+      -format=text > $OUT/coverage.json
   else
-    echo "No coverage data found";
+    echo 'No coverage data found';
   fi
-'
+fi

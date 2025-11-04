@@ -18,8 +18,8 @@
 # Keeping the rust toolchain in the image wastes 1 GB.
 FROM gcr.io/oss-fuzz-base/base-image as temp-runner-binary-builder
 
-RUN apt-get update && apt-get install -y cargo libyaml-dev
-RUN cargo install rustfilt
+# RUN apt-get update && apt-get install -y cargo libyaml-dev
+# RUN cargo install rustfilt
 
 # Using multi-stage build to copy some LLVM binaries needed in the runner image.
 FROM gcr.io/oss-fuzz-base/base-clang AS base-clang
@@ -28,7 +28,7 @@ FROM gcr.io/oss-fuzz-base/base-builder-ruby AS base-ruby
 # Real image that will be used later.
 FROM gcr.io/oss-fuzz-base/base-image
 
-COPY --from=temp-runner-binary-builder /root/.cargo/bin/rustfilt /usr/local/bin
+# COPY --from=temp-runner-binary-builder /root/.cargo/bin/rustfilt /usr/local/bin
 
 # Copy the binaries needed for code coverage and crash symbolization.
 COPY --from=base-clang /usr/local/bin/llvm-cov \
