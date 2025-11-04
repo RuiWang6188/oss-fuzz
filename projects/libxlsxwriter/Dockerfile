@@ -20,3 +20,6 @@ RUN apt-get update && apt-get install -y cmake make zlib1g-dev
 RUN git clone --depth 1 https://github.com/jmcnamara/libxlsxwriter.git libxlsxwriter \
         && cp libxlsxwriter/dev/fuzzing/build.sh $SRC/
 WORKDIR libxlsxwriter
+
+RUN git fetch --depth=1 origin f0647157ba70d3b9372e5eef05ed489c73107b62
+RUN git reset --hard f0647157ba70d3b9372e5eef05ed489c73107b62

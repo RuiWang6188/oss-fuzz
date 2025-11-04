@@ -27,3 +27,6 @@ RUN git clone --depth 1 https://github.com/yhirose/cpp-httplib.git cpp-httplib
 
 WORKDIR cpp-httplib
 COPY build.sh $SRC/
+
+RUN git fetch --depth=1 origin 4b2b851dbb91f9d6c2299976b5d03f7c5c1a312d
+RUN git reset --hard 4b2b851dbb91f9d6c2299976b5d03f7c5c1a312d

@@ -28,3 +28,7 @@ RUN zip -j $SRC/fuzz-mdhtml_seed_corpus.zip $SRC/md4c/test/fuzzers/seed-corpus/*
 
 WORKDIR $SRC/md4c
 COPY build.sh $SRC/
+
+RUN git fetch --depth=1 origin 481fbfbdf72daab2912380d62bb5f2187d438408
+RUN git reset --hard 481fbfbdf72daab2912380d62bb5f2187d438408
+

@@ -25,3 +25,6 @@ RUN git clone https://github.com/dask/dask
 COPY build.sh fuzz_fuse.py $SRC/
 WORKDIR $SRC/dask
 
+RUN git fetch --depth=1 origin 24de937fb9f9104d3cf3a4fa64c83109a47122db
+RUN git reset --hard 24de937fb9f9104d3cf3a4fa64c83109a47122db
+

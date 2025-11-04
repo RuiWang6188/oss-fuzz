@@ -16,3 +16,6 @@ FROM gcr.io/oss-fuzz-base/base-builder-python
 RUN git clone https://github.com/jupyter/nbconvert nbconvert
 COPY *.sh *py $SRC/
 WORKDIR $SRC/nbconvert
+
+RUN git fetch --depth=1 origin 216550b2aae4c329f4dab597a96ae7cac30de79a
+RUN git reset --hard 216550b2aae4c329f4dab597a96ae7cac30de79a

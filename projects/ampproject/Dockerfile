@@ -23,3 +23,6 @@ RUN git clone --depth 1 https://github.com/ampproject/amphtml amphtml && \
     cd amphtml && \
     git apply  --ignore-space-change --ignore-whitespace $SRC/fuzz_patch.diff
 WORKDIR amphtml
+
+RUN git fetch --depth=1 origin cea8d956e07cdfe54a380be3860990c070d4b110
+RUN git reset --hard cea8d956e07cdfe54a380be3860990c070d4b110

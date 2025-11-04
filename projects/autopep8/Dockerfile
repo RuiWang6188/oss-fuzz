@@ -18,3 +18,6 @@ RUN pip3 install --upgrade pip
 RUN git clone https://github.com/hhatto/autopep8 autopep8
 COPY *.sh *py $SRC/
 WORKDIR $SRC/autopep8
+
+RUN git fetch --depth=1 origin 4046ad49e25b7fa1db275bf66b1b7d60600ac391
+RUN git reset --hard 4046ad49e25b7fa1db275bf66b1b7d60600ac391

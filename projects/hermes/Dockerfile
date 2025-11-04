@@ -41,6 +41,10 @@ RUN git clone https://github.com/facebook/hermes.git && \
     git clone --depth 1 https://github.com/Zon8Research/v8-vulnerabilities && \
     git clone --depth 1 https://github.com/v8/v8
 
+WORKDIR $SRC/hermes
+RUN git fetch --depth=1 origin 100fe4068fcefcacb0f192bd3202d29dec70ab46
+RUN git reset --hard 100fe4068fcefcacb0f192bd3202d29dec70ab46
+
 # Strip comments from corpus.
 RUN find hermes/test -iname '*.js' -exec stripcomments --write --confirm-overwrite '{}' \+ && \
     find hermes/external/esprima/test_fixtures -iname '*.js' -exec stripcomments --write --confirm-overwrite '{}' \+ && \

@@ -25,3 +25,6 @@ RUN (mkdir LPM && cd LPM && cmake ../libprotobuf-mutator -GNinja -DLIB_PROTO_MUT
 WORKDIR nginx
 COPY fuzz $SRC/fuzz
 COPY build.sh add_fuzzers.diff make_fuzzers  $SRC/
+
+RUN git fetch --depth=1 origin 99312be10c0edd554a40df03591ed2d905f8bd10
+RUN git reset --hard 99312be10c0edd554a40df03591ed2d905f8bd10

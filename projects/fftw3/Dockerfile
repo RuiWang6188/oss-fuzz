@@ -23,3 +23,6 @@ RUN apt-get update && \
 RUN git clone https://github.com/FFTW/fftw3 fftw3
 COPY build.sh *.cc $SRC/
 WORKDIR $SRC/fftw3
+
+RUN git fetch --depth=1 origin 7947c101a5b724fe8b9784218388b46d7e247132
+RUN git reset --hard 7947c101a5b724fe8b9784218388b46d7e247132

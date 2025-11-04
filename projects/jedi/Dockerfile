@@ -17,3 +17,6 @@ RUN pip3 install --upgrade pip
 RUN git clone --recurse-submodules https://github.com/davidhalter/jedi jedi
 COPY *.sh *py $SRC/
 WORKDIR $SRC/jedi
+
+RUN git fetch --depth=1 origin 88d3da4ef6e06cad61bbf362568243ed55cd6c5a
+RUN git reset --hard 88d3da4ef6e06cad61bbf362568243ed55cd6c5a
