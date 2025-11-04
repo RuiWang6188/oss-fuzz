@@ -15,14 +15,14 @@
 #
 ################################################################################
 
-#docker build --pull -t gcr.io/oss-fuzz-base/base-image "$@" docker-utils/base-images/base-image
-#docker build -t gcr.io/oss-fuzz-base/base-clang "$@" docker-utils/base-images/base-clang
-docker build -t gcr.io/oss-fuzz-base/base-builder "$@" docker-utils/base-images/base-builder
-#docker build -t gcr.io/oss-fuzz-base/base-builder-go "$@" docker-utils/base-images/base-builder-go
-#docker build -t gcr.io/oss-fuzz-base/base-builder-jvm "$@" docker-utils/base-images/base-builder-jvm
-docker build -t gcr.io/oss-fuzz-base/base-builder-python "$@" docker-utils/base-images/base-builder-python
-#docker build -t gcr.io/oss-fuzz-base/base-builder-rust "$@" docker-utils/base-images/base-builder-rust
-#docker build -t gcr.io/oss-fuzz-base/base-builder-ruby "$@" docker-utils/base-images/base-builder-ruby
-#docker build -t gcr.io/oss-fuzz-base/base-builder-swift "$@" docker-utils/base-images/base-builder-swift
-docker build -t gcr.io/oss-fuzz-base/base-runner "$@" docker-utils/base-images/base-runner
-#docker build -t gcr.io/oss-fuzz-base/base-runner-debug "$@" docker-utils/base-images/base-runner-debug
+#docker build --pull -t gcr.io/oss-fuzz-base/base-image "$@" infra/base-images/base-image
+#docker build -t gcr.io/oss-fuzz-base/base-clang "$@" infra/base-images/base-clang
+docker build -t gcr.io/oss-fuzz-base/base-builder "$@" infra/base-images/base-builder
+#docker build -t gcr.io/oss-fuzz-base/base-builder-go "$@" infra/base-images/base-builder-go
+#docker build -t gcr.io/oss-fuzz-base/base-builder-jvm "$@" infra/base-images/base-builder-jvm
+docker build -t gcr.io/oss-fuzz-base/base-builder-python "$@" infra/base-images/base-builder-python
+#docker build -t gcr.io/oss-fuzz-base/base-builder-rust "$@" infra/base-images/base-builder-rust
+#docker build -t gcr.io/oss-fuzz-base/base-builder-ruby "$@" infra/base-images/base-builder-ruby
+#docker build -t gcr.io/oss-fuzz-base/base-builder-swift "$@" infra/base-images/base-builder-swift
+docker build -t gcr.io/oss-fuzz-base/base-runner "$@" infra/base-images/base-runner
+#docker build -t gcr.io/oss-fuzz-base/base-runner-debug "$@" infra/base-images/base-runner-debug
