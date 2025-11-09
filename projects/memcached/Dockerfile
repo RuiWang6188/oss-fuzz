@@ -27,3 +27,6 @@ RUN git clone https://github.com/libevent/libevent.git && \
 RUN git clone --depth 1 --branch 1.6.22 https://github.com/memcached/memcached memcached
 WORKDIR memcached
 COPY build.sh generate_corpus.py *.c *.diff *.options $SRC/
+
+RUN git fetch --depth=1 origin 62b3447380d3fd547e432d1128d94cd12f2e6852
+RUN git reset --hard 62b3447380d3fd547e432d1128d94cd12f2e6852
