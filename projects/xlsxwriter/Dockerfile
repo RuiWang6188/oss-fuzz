@@ -21,3 +21,6 @@ RUN git clone --depth 1 https://github.com/jmcnamara/XlsxWriter.git XlsxWriter \
 RUN cp -r XlsxWriter/dev/fuzzing/corpus $SRC/corpus
 WORKDIR $SRC/XlsxWriter
 
+RUN git fetch --depth=1 origin e943bee8c9cdf0661cfdb83d5497e0725390e41e
+RUN git reset --hard e943bee8c9cdf0661cfdb83d5497e0725390e41e
+
