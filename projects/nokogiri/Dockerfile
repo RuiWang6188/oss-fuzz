@@ -20,3 +20,9 @@ RUN apt-get update && apt-get --no-install-recommends install -y build-essential
 RUN git clone --depth=1 https://github.com/sparklemotion/nokogiri.git
 
 COPY build.sh $SRC
+
+WORKDIR $SRC/nokogiri
+RUN git fetch --depth=1 origin 680374099b3570b97471f822acc978cc847fee46
+RUN git reset --hard 680374099b3570b97471f822acc978cc847fee46
+
+WORKDIR $SRC
