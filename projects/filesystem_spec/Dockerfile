@@ -17,3 +17,6 @@ RUN pip3 install --upgrade pip aiohttp requests
 RUN git clone https://github.com/fsspec/filesystem_spec filesystem_spec
 COPY *.sh *py $SRC/
 WORKDIR $SRC/filesystem_spec
+
+RUN git fetch --depth=1 origin 8a48e0d2515e265935995409711ed4f9c66a3f8c
+RUN git reset --hard 8a48e0d2515e265935995409711ed4f9c66a3f8c
